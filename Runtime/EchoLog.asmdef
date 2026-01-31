@@ -16,7 +16,7 @@
     "versionDefines": [
         {
             "name": "Unity",
-            "expression": "6000.0.0f1",
+            "expression": "6000.0.0",
             "define": "UNITY_6000_0_0_OR_NEWER"
         }
     ],
