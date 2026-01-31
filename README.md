@@ -23,7 +23,7 @@ EchoLog 是一个高性能的 Unity 日志系统，专为现代 Unity 项目设�
 在 Unity Package Manager 中添加：
 
 ```
-https://github.com/CryBaby90/EchoLog.git#package
+https://github.com/CryBaby90/EchoLog.git#main
 ```
 
 ### 依赖
