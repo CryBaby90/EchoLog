@@ -19,7 +19,7 @@ namespace EchoLog
     internal struct LogEntry
     {
         /// <summary>日志级别</summary>
-        internal ELogLevel Level;
+        internal EEchoLogLevel Level;
 
         /// <summary>Unix 时间戳（毫秒）</summary>
         internal long Timestamp;

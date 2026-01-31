@@ -20,22 +20,22 @@ using System.Text;
 namespace EchoLog
 {
     /// <summary>延迟求值的消息委托</summary>
-    public delegate string MessageFormatter();
+    public delegate string EchoMessageFormatter();
 
     /// <summary>结构化日志消息（避免 GC 分配）</summary>
-    public struct StructuredLogMessage
+    public struct EchoStructuredLogMessage
     {
-        private readonly MessageFormatter formatter;
+        private readonly EchoMessageFormatter formatter;
 
-        public StructuredLogMessage(MessageFormatter formatter)
+        public EchoStructuredLogMessage(EchoMessageFormatter formatter)
         {
             this.formatter = formatter;
         }
 
-        /// <summary>隐式转换：string -> StructuredLogMessage</summary>
-        public static implicit operator StructuredLogMessage(string message)
+        /// <summary>隐式转换：string -> EchoStructuredLogMessage</summary>
+        public static implicit operator EchoStructuredLogMessage(string message)
         {
-            return new StructuredLogMessage(() => message);
+            return new EchoStructuredLogMessage(() => message);
         }
 
         /// <summary>获取字符串表示</summary>
@@ -45,9 +45,9 @@ namespace EchoLog
         }
 
         /// <summary>快速格式化（1 个参数）- 使用 StringBuilder 避免 GC</summary>
-        public static StructuredLogMessage Format<T1>(string format, T1 arg1)
+        public static EchoStructuredLogMessage Format<T1>(string format, T1 arg1)
         {
-            return new StructuredLogMessage(() =>
+            return new EchoStructuredLogMessage(() =>
             {
                 var sb = new StringBuilder(format.Length + 32);
                 FormatWithOneArg(sb, format, arg1);
@@ -56,9 +56,9 @@ namespace EchoLog
         }
 
         /// <summary>快速格式化（2 个参数）- 使用 StringBuilder 避免 GC</summary>
-        public static StructuredLogMessage Format<T1, T2>(string format, T1 arg1, T2 arg2)
+        public static EchoStructuredLogMessage Format<T1, T2>(string format, T1 arg1, T2 arg2)
         {
-            return new StructuredLogMessage(() =>
+            return new EchoStructuredLogMessage(() =>
             {
                 var sb = new StringBuilder(format.Length + 64);
                 FormatWithTwoArgs(sb, format, arg1, arg2);
@@ -67,9 +67,9 @@ namespace EchoLog
         }
 
         /// <summary>快速格式化（3 个参数）- 使用 StringBuilder 避免 GC</summary>
-        public static StructuredLogMessage Format<T1, T2, T3>(string format, T1 arg1, T2 arg2, T3 arg3)
+        public static EchoStructuredLogMessage Format<T1, T2, T3>(string format, T1 arg1, T2 arg2, T3 arg3)
         {
-            return new StructuredLogMessage(() =>
+            return new EchoStructuredLogMessage(() =>
             {
                 var sb = new StringBuilder(format.Length + 96);
                 FormatWithThreeArgs(sb, format, arg1, arg2, arg3);
@@ -78,9 +78,9 @@ namespace EchoLog
         }
 
         /// <summary>快速格式化（4 个参数）- 使用 StringBuilder 避免 GC</summary>
-        public static StructuredLogMessage Format<T1, T2, T3, T4>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
+        public static EchoStructuredLogMessage Format<T1, T2, T3, T4>(string format, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
         {
-            return new StructuredLogMessage(() =>
+            return new EchoStructuredLogMessage(() =>
             {
                 var sb = new StringBuilder(format.Length + 128);
                 FormatWithFourArgs(sb, format, arg1, arg2, arg3, arg4);

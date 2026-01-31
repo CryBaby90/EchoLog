@@ -23,14 +23,14 @@ namespace EchoLog.Tests
     [TestFixture]
     public class LoggerPerformanceTest
     {
-        private LogConfig config;
+        private EchoLogConfig config;
         private const int Iterations = 1000;
 
         [SetUp]
         public void Setup()
         {
-            config = ScriptableObject.CreateInstance<LogConfig>();
-            config.MinLogLevel = ELogLevel.Info;
+            config = ScriptableObject.CreateInstance<EchoLogConfig>();
+            config.MinLogLevel = EEchoLogLevel.Info;
             config.EnableAsync = false; // 同步模式便于测试
             config.EnableUnityConsole = false;
             config.EnableFileOutput = false;
@@ -42,13 +42,13 @@ namespace EchoLog.Tests
             var _regex = config.CachedRegexPatterns;
             var _hashSet = config.CriticalCategorySet;
 
-            Logger.Initialize(config);
+            EchoLogger.Initialize(config);
         }
 
         [TearDown]
         public void TearDown()
         {
-            Logger.Shutdown();
+            EchoLogger.Shutdown();
             if (config != null)
             {
                 config.ClearCache();
@@ -61,7 +61,7 @@ namespace EchoLog.Tests
         public void Performance_Log_NoGCAllocation()
         {
             // 预热
-            Logger.Info("Warm up");
+            EchoLogger.Info("Warm up");
 
             // 记录初始内存
             long startMemory = GC.GetTotalMemory(true);
@@ -69,7 +69,7 @@ namespace EchoLog.Tests
             // 执行测试
             for (int i = 0; i < Iterations; i++)
             {
-                Logger.Info($"Test message {i}");
+                EchoLogger.Info($"Test message {i}");
             }
 
             // 记录结束内存
@@ -89,7 +89,7 @@ namespace EchoLog.Tests
             // 预热
             for (int i = 0; i < 10; i++)
             {
-                Logger.Info($"password={i} token=abc{i}");
+                EchoLogger.Info($"password={i} token=abc{i}");
             }
 
             // 不使用 GC.GetTotalMemory(true) 因为它会触发 GC
@@ -98,7 +98,7 @@ namespace EchoLog.Tests
             {
                 for (int i = 0; i < Iterations; i++)
                 {
-                    Logger.Info($"password={i} token=abc{i}");
+                    EchoLogger.Info($"password={i} token=abc{i}");
                 }
             }, "敏感信息过滤应该正常工作且无异常");
         }
@@ -113,7 +113,7 @@ namespace EchoLog.Tests
             // 使用关键分类进行日志
             for (int i = 0; i < Iterations * 100; i++)
             {
-                Logger.Log(ELogLevel.Info, $"Test message {i}", "Network");
+                EchoLogger.Log(EEchoLogLevel.Info, $"Test message {i}", "Network");
             }
 
             stopwatch.Stop();
@@ -125,13 +125,13 @@ namespace EchoLog.Tests
 
         /// <summary>测试：结构化日志应该正常工作且无异常</summary>
         [Test]
-        public void Performance_StructuredLogMessage_MinimalGCAllocation()
+        public void Performance_EchoStructuredLogMessage_MinimalGCAllocation()
         {
             // 预热
             for (int i = 0; i < 10; i++)
             {
-                var msg = StructuredLogMessage.Format("Value: {0}", i);
-                Logger.InfoStructured(in msg);
+                var msg = EchoStructuredLogMessage.Format("Value: {0}", i);
+                EchoLogger.InfoStructured(in msg);
             }
 
             // 不使用 GC.GetTotalMemory(true) 因为它会触发 GC
@@ -140,8 +140,8 @@ namespace EchoLog.Tests
             {
                 for (int i = 0; i < Iterations; i++)
                 {
-                    var msg = StructuredLogMessage.Format("Value: {0}", i);
-                    Logger.InfoStructured(in msg);
+                    var msg = EchoStructuredLogMessage.Format("Value: {0}", i);
+                    EchoLogger.InfoStructured(in msg);
                 }
             }, "结构化日志应该正常工作且无异常");
         }
@@ -151,14 +151,14 @@ namespace EchoLog.Tests
         public void Performance_LogLevelFilter_NoAllocation()
         {
             // 设置为 Warning 级别，Debug 日志不应该输出
-            config.MinLogLevel = ELogLevel.Warning;
+            config.MinLogLevel = EEchoLogLevel.Warning;
 
             long startMemory = GC.GetTotalMemory(true);
 
             // Debug 日志会被过滤，不应该产生分配
             for (int i = 0; i < Iterations; i++)
             {
-                Logger.Debug($"This should be filtered {i}");
+                EchoLogger.Debug($"This should be filtered {i}");
             }
 
             long endMemory = GC.GetTotalMemory(true);
@@ -180,7 +180,7 @@ namespace EchoLog.Tests
             // 批量日志
             for (int i = 0; i < Iterations * 10; i++)
             {
-                Logger.Info($"Batch log message {i}");
+                EchoLogger.Info($"Batch log message {i}");
             }
 
             stopwatch.Stop();

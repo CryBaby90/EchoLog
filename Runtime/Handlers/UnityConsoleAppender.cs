@@ -28,17 +28,17 @@ namespace EchoLog
 
             switch (entry.Level)
             {
-                case ELogLevel.Debug:
-                case ELogLevel.Info:
+                case EEchoLogLevel.Debug:
+                case EEchoLogLevel.Info:
                     Debug.Log(message);
                     break;
 
-                case ELogLevel.Warning:
+                case EEchoLogLevel.Warning:
                     Debug.LogWarning(message);
                     break;
 
-                case ELogLevel.Error:
-                case ELogLevel.Fatal:
+                case EEchoLogLevel.Error:
+                case EEchoLogLevel.Fatal:
                     Debug.LogError(message);
                     break;
             }

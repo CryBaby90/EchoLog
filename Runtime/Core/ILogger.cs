@@ -21,13 +21,13 @@ namespace EchoLog
         /// <summary>记录日志</summary>
         /// <param name="level">日志级别</param>
         /// <param name="message">日志消息</param>
-        void Log(ELogLevel level, string message);
+        void Log(EEchoLogLevel level, string message);
 
         /// <summary>记录格式化日志</summary>
         /// <param name="level">日志级别</param>
         /// <param name="format">格式字符串</param>
         /// <param name="args">格式化参数</param>
-        void LogFormat(ELogLevel level, string format, params object[] args);
+        void LogFormat(EEchoLogLevel level, string format, params object[] args);
 
         /// <summary>记录调试信息</summary>
         void Debug(string message);

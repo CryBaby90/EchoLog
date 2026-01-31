@@ -31,15 +31,15 @@ namespace EchoLog.Tests
         [SerializeField] private int testIterations = 10000;
         [SerializeField] private bool runOnStart = false;
 
-        private LogConfig config;
+        private EchoLogConfig config;
 
         private void Start()
         {
             // 加载配置
-            config = Resources.Load<LogConfig>("DefaultLogConfig");
+            config = Resources.Load<EchoLogConfig>("DefaultEchoLogConfig");
             if (config == null)
             {
-                UnityEngine.Debug.LogError("找不到 DefaultLogConfig，请先创建默认配置");
+                UnityEngine.Debug.LogError("找不到 DefaultEchoLogConfig，请先创建默认配置");
                 return;
             }
 
@@ -54,7 +54,7 @@ namespace EchoLog.Tests
         {
             if (config == null)
             {
-                UnityEngine.Debug.LogError("请先加载 LogConfig");
+                UnityEngine.Debug.LogError("请先加载 EchoLogConfig");
                 return;
             }
 
@@ -63,12 +63,12 @@ namespace EchoLog.Tests
             UnityEngine.Debug.Log("========================================");
 
             // 初始化日志系统
-            Logger.Initialize(config);
+            EchoLogger.Initialize(config);
 
             // 预热
             for (int i = 0; i < 100; i++)
             {
-                Logger.Info($"Warm up {i}");
+                EchoLogger.Info($"Warm up {i}");
             }
 
             // 运行各项测试
@@ -83,7 +83,7 @@ namespace EchoLog.Tests
             UnityEngine.Debug.Log("========================================");
 
             // 清理
-            Logger.Shutdown();
+            EchoLogger.Shutdown();
         }
 
         /// <summary>测试 1：基本日志吞吐量</summary>
@@ -94,7 +94,7 @@ namespace EchoLog.Tests
 
             for (int i = 0; i < testIterations; i++)
             {
-                Logger.Info($"Test message {i}");
+                EchoLogger.Info($"Test message {i}");
             }
 
             stopwatch.Stop();
@@ -113,7 +113,7 @@ namespace EchoLog.Tests
         private void TestLogFiltering()
         {
             // 设置为 Warning 级别，Debug 日志应该被过滤
-            Logger.MinELogLevel = ELogLevel.Warning;
+            EchoLogger.MinEEchoLogLevel = EEchoLogLevel.Warning;
 
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
             long startMemory = GC.GetTotalMemory(true);
@@ -121,7 +121,7 @@ namespace EchoLog.Tests
             // Debug 日志应该被过滤
             for (int i = 0; i < testIterations; i++)
             {
-                Logger.Debug($"Filtered message {i}");
+                EchoLogger.Debug($"Filtered message {i}");
             }
 
             stopwatch.Stop();
@@ -132,7 +132,7 @@ namespace EchoLog.Tests
                          $"分配: {allocated} bytes (应该接近 0)");
 
             // 恢复级别
-            Logger.MinELogLevel = config.MinLogLevel;
+            EchoLogger.MinEEchoLogLevel = config.MinLogLevel;
         }
 
         /// <summary>测试 3：敏感信息过滤</summary>
@@ -143,7 +143,7 @@ namespace EchoLog.Tests
 
             for (int i = 0; i < testIterations; i++)
             {
-                Logger.Info($"password={i} token=abc{i} key=xyz{i}");
+                EchoLogger.Info($"password={i} token=abc{i} key=xyz{i}");
             }
 
             stopwatch.Stop();
@@ -163,8 +163,8 @@ namespace EchoLog.Tests
 
             for (int i = 0; i < testIterations; i++)
             {
-                var msg = StructuredLogMessage.Format("Value: {0}, Count: {1}", i, i * 2);
-                Logger.InfoStructured(in msg);
+                var msg = EchoStructuredLogMessage.Format("Value: {0}, Count: {1}", i, i * 2);
+                EchoLogger.InfoStructured(in msg);
             }
 
             stopwatch.Stop();
@@ -186,7 +186,7 @@ namespace EchoLog.Tests
             int checkIterations = testIterations * 100;
             for (int i = 0; i < checkIterations; i++)
             {
-                Logger.Log(ELogLevel.Info, $"Test {i}", "Network");
+                EchoLogger.Log(EEchoLogLevel.Info, $"Test {i}", "Network");
             }
 
             stopwatch.Stop();
@@ -201,7 +201,7 @@ namespace EchoLog.Tests
 
         private void OnDestroy()
         {
-            Logger.Shutdown();
+            EchoLogger.Shutdown();
         }
     }
 }

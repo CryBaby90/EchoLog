@@ -23,11 +23,11 @@ namespace EchoLog
 {
     /// <summary>日志配置（ScriptableObject）</summary>
     [CreateAssetMenu(menuName = "AbyssTavern/Log Config")]
-    public partial class LogConfig : ScriptableObject
+    public partial class EchoLogConfig : ScriptableObject
     {
         [Header("全局设置")]
         [Tooltip("最低日志级别")]
-        public ELogLevel MinLogLevel = ELogLevel.Info;
+        public EEchoLogLevel MinLogLevel = EEchoLogLevel.Info;
 
         [Tooltip("启用异步写入")]
         public bool EnableAsync = true;
@@ -81,7 +81,7 @@ namespace EchoLog
 
         [Header("发布模式覆盖")]
         [Tooltip("发布模式最低日志级别")]
-        public ELogLevel ReleaseMinLevel = ELogLevel.Error;
+        public EEchoLogLevel ReleaseMinLevel = EEchoLogLevel.Error;
 
         #region 性能优化缓存
 

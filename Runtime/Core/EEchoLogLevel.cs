@@ -14,7 +14,7 @@
 namespace EchoLog
 {
     /// <summary>日志级别</summary>
-    public enum ELogLevel
+    public enum EEchoLogLevel
     {
         /// <summary>调试信息</summary>
         Debug = 0,

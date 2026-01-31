@@ -140,7 +140,7 @@ namespace EchoLog
                 perfBuilder.Append(memoryMB);
                 perfBuilder.Append(" MB");
 
-                Logger.Log(ELogLevel.Info, perfBuilder.ToString(), "Performance");
+                EchoLogger.Log(EEchoLogLevel.Info, perfBuilder.ToString(), "Performance");
             }
         }
 
@@ -170,7 +170,7 @@ namespace EchoLog
                 logQueue.Enqueue(entry);
 
                 // 限制队列大小（防止内存溢出）
-                if (Logger.Config != null && logQueue.Count > Logger.Config.QueueSize)
+                if (EchoLogger.Config != null && logQueue.Count > EchoLogger.Config.QueueSize)
                 {
                     logQueue.Dequeue(); // 丢弃最旧的日志
                 }
@@ -204,7 +204,7 @@ namespace EchoLog
                 for (int i = 0; i < count; i++)
                 {
                     var entry = entriesToWrite[i];
-                    Logger.WriteLog(in entry);
+                    EchoLogger.WriteLog(in entry);
                 }
             }
         }
@@ -277,7 +277,7 @@ namespace EchoLog
                 while (logQueue.Count > 0)
                 {
                     var entry = logQueue.Dequeue();
-                    Logger.WriteLog(in entry);
+                    EchoLogger.WriteLog(in entry);
                 }
             }
         }

@@ -16,48 +16,48 @@ using System;
 namespace EchoLog
 {
     /// <summary>Logger 扩展方法（结构化日志支持）</summary>
-    public static partial class Logger
+    public static partial class EchoLogger
     {
         /// <summary>记录结构化日志</summary>
         /// <param name="level">日志级别</param>
         /// <param name="message">结构化日志消息</param>
         /// <param name="category">日志分类</param>
-        public static void LogStructured(ELogLevel level, in StructuredLogMessage message, string category = null)
+        public static void LogStructured(EEchoLogLevel level, in EchoStructuredLogMessage message, string category = null)
         {
-            if (config == null || level < MinELogLevel)
+            if (config == null || level < MinEEchoLogLevel)
                 return;
 
             Log(level, message.ToString(), category);
         }
 
         /// <summary>记录结构化调试信息</summary>
-        public static void DebugStructured(in StructuredLogMessage message, string category = null)
+        public static void DebugStructured(in EchoStructuredLogMessage message, string category = null)
         {
-            LogStructured(ELogLevel.Debug, in message, category);
+            LogStructured(EEchoLogLevel.Debug, in message, category);
         }
 
         /// <summary>记录结构化一般信息</summary>
-        public static void InfoStructured(in StructuredLogMessage message, string category = null)
+        public static void InfoStructured(in EchoStructuredLogMessage message, string category = null)
         {
-            LogStructured(ELogLevel.Info, in message, category);
+            LogStructured(EEchoLogLevel.Info, in message, category);
         }
 
         /// <summary>记录结构化警告</summary>
-        public static void WarningStructured(in StructuredLogMessage message, string category = null)
+        public static void WarningStructured(in EchoStructuredLogMessage message, string category = null)
         {
-            LogStructured(ELogLevel.Warning, in message, category);
+            LogStructured(EEchoLogLevel.Warning, in message, category);
         }
 
         /// <summary>记录结构化错误</summary>
-        public static void ErrorStructured(in StructuredLogMessage message, string category = null)
+        public static void ErrorStructured(in EchoStructuredLogMessage message, string category = null)
         {
-            LogStructured(ELogLevel.Error, in message, category);
+            LogStructured(EEchoLogLevel.Error, in message, category);
         }
 
         /// <summary>记录结构化致命错误</summary>
-        public static void FatalStructured(in StructuredLogMessage message, string category = null)
+        public static void FatalStructured(in EchoStructuredLogMessage message, string category = null)
         {
-            LogStructured(ELogLevel.Fatal, in message, category);
+            LogStructured(EEchoLogLevel.Fatal, in message, category);
         }
     }
 }

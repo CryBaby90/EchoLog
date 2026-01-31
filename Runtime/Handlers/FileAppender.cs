@@ -24,7 +24,7 @@ namespace EchoLog
     /// <summary>文件输出处理器（支持文件轮转、压缩、归档）</summary>
     internal class FileAppender : ILogAppender
     {
-        private readonly LogConfig config;
+        private readonly EchoLogConfig config;
         private StreamWriter currentWriter;
         private string currentLogFile;
         private long currentFileSize;
@@ -43,7 +43,7 @@ namespace EchoLog
         /// <summary>批量刷新大小</summary>
         private const int BatchFlushSize = 10;
 
-        internal FileAppender(LogConfig config)
+        internal FileAppender(EchoLogConfig config)
         {
             this.config = config ?? throw new ArgumentNullException(nameof(config));
             InitializeLogFile();
@@ -128,7 +128,7 @@ namespace EchoLog
             lineBuilder.Append(entry.Message);
 
             // 错误和致命错误级别是否在文件中输出堆栈跟踪
-            if (config.EnableFileStackTrace && (entry.Level == ELogLevel.Error || entry.Level == ELogLevel.Fatal))
+            if (config.EnableFileStackTrace && (entry.Level == EEchoLogLevel.Error || entry.Level == EEchoLogLevel.Fatal))
             {
                 if (!string.IsNullOrEmpty(entry.StackTrace))
                 {

@@ -20,10 +20,10 @@ using UnityEngine;
 
 namespace EchoLog
 {
-    /// <summary>主 Logger 静态类</summary>
-    public static partial class Logger
+    /// <summary>主 EchoLogger 静态类</summary>
+    public static partial class EchoLogger
     {
-        private static LogConfig config;
+        private static EchoEchoLogConfig config;
         private static readonly List<ILogAppender> appenders = new List<ILogAppender>();
         private static readonly StringBuilder stringBuilder = new StringBuilder(512);
         private static readonly object lockObject = new object();
@@ -63,15 +63,15 @@ namespace EchoLog
         }
 
         /// <summary>获取当前配置</summary>
-        public static LogConfig Config => config;
+        public static EchoLogConfig Config => config;
 
         /// <summary>初始化日志系统</summary>
         /// <param name="config">日志配置</param>
-        public static void Initialize(LogConfig config)
+        public static void Initialize(EchoLogConfig config)
         {
             if (config == null)
             {
-                string msg = "LogConfig 不能为 null";
+                string msg = "EchoLogConfig 不能为 null";
                 UnityEngine.Debug.LogError(msg);
                 LogEmergency("ERROR", msg);
                 return;
@@ -80,13 +80,13 @@ namespace EchoLog
             Logger.config = config;
 
             // 从配置读取日志级别（编辑器和发布模式都生效）
-            MinELogLevel = config.MinLogLevel;
+            MinEEchoLogLevel = config.MinLogLevel;
 
             #if !UNITY_EDITOR
             // 发布模式可以使用更严格的日志级别
-            if (config.ReleaseMinLevel > MinELogLevel)
+            if (config.ReleaseMinLevel > MinEEchoLogLevel)
             {
-                MinELogLevel = config.ReleaseMinLevel;
+                MinEEchoLogLevel = config.ReleaseMinLevel;
             }
             #endif
 
@@ -111,19 +111,19 @@ namespace EchoLog
         }
 
         /// <summary>当前最低日志级别（可在运行时修改）</summary>
-        public static ELogLevel MinELogLevel { get; set; } = ELogLevel.Info;
+        public static EEchoLogLevel MinEEchoLogLevel { get; set; } = EEchoLogLevel.Info;
 
         // ReSharper disable Unity.PerformanceAnalysis
         /// <summary>核心日志方法（线程安全）</summary>
         /// <param name="level">日志级别</param>
         /// <param name="message">日志消息</param>
         /// <param name="category">日志分类</param>
-        public static void Log(ELogLevel level, string message, string category = null)
+        public static void Log(EEchoLogLevel level, string message, string category = null)
         {
             if (config == null)
             {
                 // ERROR 和 FATAL 级别：写入紧急日志文件
-                if (level >= ELogLevel.Error)
+                if (level >= EEchoLogLevel.Error)
                 {
                     string categoryStr = category ?? "General";
                     string fullMsg = $"[日志系统未初始化][{categoryStr}] {message}";
@@ -133,7 +133,7 @@ namespace EchoLog
                 return;
             }
 
-            if (level < MinELogLevel && !IsCriticalLog(category))
+            if (level < MinEEchoLogLevel && !IsCriticalLog(category))
                 return;
 
             var entry = new LogEntry
@@ -146,7 +146,7 @@ namespace EchoLog
             };
 
             // 堆栈跟踪（Warning 及以上级别）
-            if (config.EnableStackTrace && level >= ELogLevel.Warning)
+            if (config.EnableStackTrace && level >= EEchoLogLevel.Warning)
             {
                 entry.StackTrace = Environment.StackTrace;
             }
@@ -166,9 +166,9 @@ namespace EchoLog
         /// <param name="level">日志级别</param>
         /// <param name="formatter">消息格式化委托</param>
         /// <param name="category">日志分类</param>
-        public static void LogLazy(ELogLevel level, Func<string> formatter, string category = null)
+        public static void LogLazy(EEchoLogLevel level, Func<string> formatter, string category = null)
         {
-            if (config == null || level < MinELogLevel)
+            if (config == null || level < MinEEchoLogLevel)
                 return;
 
             string message = formatter.Invoke();
@@ -192,23 +192,23 @@ namespace EchoLog
         /// <param name="category">日志分类</param>
         public static void Critical(string message, string category = "Critical")
         {
-            Log(ELogLevel.Info, message, category);
+            Log(EEchoLogLevel.Info, message, category);
         }
 
         /// <summary>记录调试信息</summary>
-        public static void Debug(string message) => Log(ELogLevel.Debug, message);
+        public static void Debug(string message) => Log(EEchoLogLevel.Debug, message);
 
         /// <summary>记录一般信息</summary>
-        public static void Info(string message) => Log(ELogLevel.Info, message);
+        public static void Info(string message) => Log(EEchoLogLevel.Info, message);
 
         /// <summary>记录警告</summary>
-        public static void Warning(string message) => Log(ELogLevel.Warning, message);
+        public static void Warning(string message) => Log(EEchoLogLevel.Warning, message);
 
         /// <summary>记录错误</summary>
-        public static void Error(string message) => Log(ELogLevel.Error, message);
+        public static void Error(string message) => Log(EEchoLogLevel.Error, message);
 
         /// <summary>记录致命错误</summary>
-        public static void Fatal(string message) => Log(ELogLevel.Fatal, message);
+        public static void Fatal(string message) => Log(EEchoLogLevel.Fatal, message);
 
         /// <summary>记录异常</summary>
         /// <param name="exception">异常对象</param>
@@ -229,7 +229,7 @@ namespace EchoLog
             stringBuilder.Append(exception.Message);
             stringBuilder.AppendLine().Append(exception.StackTrace);
 
-            Log(ELogLevel.Error, stringBuilder.ToString());
+            Log(EEchoLogLevel.Error, stringBuilder.ToString());
         }
 
         // ReSharper disable Unity.PerformanceAnalysis

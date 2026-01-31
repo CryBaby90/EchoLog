@@ -21,7 +21,7 @@ namespace EchoLog
     /// <summary>DOTS 日志请求组件</summary>
     internal struct LogRequestComponent : IComponentData
     {
-        internal ELogLevel Level;
+        internal EEchoLogLevel Level;
         internal FixedString512Bytes Message;
         internal FixedString64Bytes Category;
         internal long Timestamp;
@@ -47,7 +47,7 @@ namespace EchoLog
             var ecb = new EntityCommandBuffer(Allocator.Temp);
             foreach (var (request, entity) in SystemAPI.Query<LogRequestComponent>().WithEntityAccess())
             {
-                Logger.Log(request.Level, request.Message.ToString(), request.Category.ToString());
+                EchoLogger.Log(request.Level, request.Message.ToString(), request.Category.ToString());
                 ecb.DestroyEntity(entity);
             }
             ecb.Playback(state.EntityManager);
@@ -60,7 +60,7 @@ namespace EchoLog
             foreach (var (request, entity) in SystemAPI.Query<LogRequestComponent>().WithEntityAccess())
             {
                 // 转换为托管字符串并输出到主日志系统
-                Logger.Log(request.Level, request.Message.ToString(), request.Category.ToString());
+                EchoLogger.Log(request.Level, request.Message.ToString(), request.Category.ToString());
                 ecb.DestroyEntity(entity);
             }
             ecb.Playback(state.EntityManager);
@@ -68,7 +68,7 @@ namespace EchoLog
     }
 
     /// <summary>DOTS 日志静态接口</summary>
-    public static class DOTSLogger
+    public static class EchoDOTSLogger
     {
         private static World defaultWorld;
         private static bool isInitialized;
@@ -92,7 +92,7 @@ namespace EchoLog
         /// <param name="level">日志级别</param>
         /// <param name="message">日志消息（FixedString）</param>
         /// <param name="category">日志分类</param>
-        public static void Log<T>(ELogLevel level, FixedString512Bytes message, T category) where T : unmanaged
+        public static void Log<T>(EEchoLogLevel level, FixedString512Bytes message, T category) where T : unmanaged
         {
             if (!isInitialized || defaultWorld == null)
                 return;
@@ -115,25 +115,25 @@ namespace EchoLog
         /// <summary>记录调试信息</summary>
         public static void Debug<T>(FixedString512Bytes message, T category) where T : unmanaged
         {
-            Log(ELogLevel.Debug, message, category);
+            Log(EEchoLogLevel.Debug, message, category);
         }
 
         /// <summary>记录一般信息</summary>
         public static void Info<T>(FixedString512Bytes message, T category) where T : unmanaged
         {
-            Log(ELogLevel.Info, message, category);
+            Log(EEchoLogLevel.Info, message, category);
         }
 
         /// <summary>记录警告</summary>
         public static void Warning<T>(FixedString512Bytes message, T category) where T : unmanaged
         {
-            Log(ELogLevel.Warning, message, category);
+            Log(EEchoLogLevel.Warning, message, category);
         }
 
         /// <summary>记录错误</summary>
         public static void Error<T>(FixedString512Bytes message, T category) where T : unmanaged
         {
-            Log(ELogLevel.Error, message, category);
+            Log(EEchoLogLevel.Error, message, category);
         }
 
         // ========== 格式化帮助方法 ==========
