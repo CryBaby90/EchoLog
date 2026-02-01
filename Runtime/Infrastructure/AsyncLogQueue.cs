@@ -90,17 +90,6 @@ namespace EchoLog
             Initialize();
         }
 
-        private void OnDestroy()
-        {
-            // 编辑器模式下清理实例引用
-            #if UNITY_EDITOR
-            if (instance == this)
-            {
-                instance = null;
-            }
-            #endif
-        }
-
         /// <summary>初始化异步队列</summary>
         public void Initialize()
         {
