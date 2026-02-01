@@ -37,10 +37,10 @@ https://github.com/CryBaby90/EchoLog.git#main
 
 ### 1. 创建日志配置
 
-在 `Assets/Resources` 目录下创建 LogConfig：
+在 `Assets/Resources` 目录下创建 EchoLogConfig：
 
 ```
-Assets/Resources/DefaultLogConfig.asset
+Assets/Resources/DefaultEchoLogConfig.asset
 ```
 
 在 Inspector 中配置：
@@ -55,31 +55,31 @@ Assets/Resources/DefaultLogConfig.asset
 using EchoLog;
 
 // 加载配置
-LogConfig config = Resources.Load<LogConfig>("DefaultLogConfig");
+EchoLogConfig config = Resources.Load<EchoLogConfig>("DefaultEchoLogConfig");
 
 // 初始化
-Logger.Initialize(config);
+EchoLogger.Initialize(config);
 ```
 
 ### 3. 记录日志
 
 ```csharp
 // 基础日志
-Logger.Debug("调试信息");
-Logger.Info("一般信息");
-Logger.Warning("警告信息");
-Logger.Error("错误信息");
-Logger.Fatal("致命错误");
+EchoLogger.Debug("调试信息");
+EchoLogger.Info("一般信息");
+EchoLogger.Warning("警告信息");
+EchoLogger.Error("错误信息");
+EchoLogger.Fatal("致命错误");
 
 // 带分类的日志
-Logger.Log(ELogLevel.Info, "玩家进入战斗", "Combat");
+EchoLogger.Log(EEchoLogLevel.Info, "玩家进入战斗", "Combat");
 
 // 关键日志（无视级别）
-Logger.Critical("游戏保存成功", "SaveGame");
+EchoLogger.Critical("游戏保存成功", "SaveGame");
 
 // 结构化日志（零 GC）
-var msg = StructuredLogMessage.Format("生命值: {0}/{1}", health, maxHealth);
-Logger.InfoStructured(in msg);
+var msg = EchoStructuredLogMessage.Format("生命值: {0}/{1}", health, maxHealth);
+EchoLogger.InfoStructured(in msg);
 ```
 
 ## API 文档
@@ -87,7 +87,7 @@ Logger.InfoStructured(in msg);
 ### 日志级别
 
 ```csharp
-public enum ELogLevel
+public enum EEchoLogLevel
 {
     Debug = 0,
     Info = 1,
@@ -119,19 +119,19 @@ EchoLog 提供了专为 Unity DOTS 设计的日志系统：
 using EchoLog;
 
 // 初始化 DOTS 日志
-DOTSLogger.Initialize(World.DefaultGameObjectInjectionWorld);
+EchoDOTSLogger.Initialize(World.DefaultGameObjectInjectionWorld);
 
 // 使用 FixedString 记录日志（零 GC）
 var message = new FixedString512Bytes();
 message.Append("Player position: ");
-message.Append(DOTSLogger.FormatFloat3(playerPosition));
+message.Append(EchoDOTSLogger.FormatFloat3(playerPosition));
 
-DOTSLogger.Info(message, (FixedString64Bytes)"GamePlay");
+EchoDOTSLogger.Info(message, (FixedString64Bytes)"GamePlay");
 
 // 快捷方法
-DOTSLogger.Debug(message);
-DOTSLogger.Warning(message);
-DOTSLogger.Error(message);
+EchoDOTSLogger.Debug(message);
+EchoDOTSLogger.Warning(message);
+EchoDOTSLogger.Error(message);
 ```
 
 ## 性能优化

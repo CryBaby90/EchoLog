@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.1.0] - 2026-02-01
+
+### Changed
+- **BREAKING**: 所有公共类型添加 Echo 前缀以提升命名空间清晰度
+  - `Logger` → `EchoLogger`
+  - `LogConfig` → `EchoLogConfig`
+  - `ELogLevel` → `EEchoLogLevel`
+  - `StructuredLogMessage` → `EchoStructuredLogMessage`
+  - `MessageFormatter` → `EchoMessageFormatter`
+  - `DOTSLogger` → `EchoDOTSLogger`
+
+### Fixed
+- 修复 `MinEEchoLogLevel` 重复 E 前缀问题 → `MinEchoLogLevel`
+- 修复 AsyncLogQueue 在编辑器模式下的 DontSaveInEditor 断言错误
+- 添加编辑器模式下的 GameObject hideFlags 设置
+
+### Added
+- 为重命名的文件添加 Unity .meta 文件
+
 ## [1.0.0] - 2025-01-31
 
 ### Added
