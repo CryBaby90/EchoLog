@@ -24,7 +24,7 @@ namespace EchoLog
         /// <param name="category">日志分类</param>
         public static void LogStructured(EEchoLogLevel level, in EchoStructuredLogMessage message, string category = null)
         {
-            if (config == null || level < MinEEchoLogLevel)
+            if (config == null || level < MinEchoLogLevel)
                 return;
 
             Log(level, message.ToString(), category);

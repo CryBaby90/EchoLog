@@ -113,7 +113,7 @@ namespace EchoLog.Tests
         private void TestLogFiltering()
         {
             // 设置为 Warning 级别，Debug 日志应该被过滤
-            EchoLogger.MinEEchoLogLevel = EEchoLogLevel.Warning;
+            EchoLogger.MinEchoLogLevel = EEchoLogLevel.Warning;
 
             var stopwatch = System.Diagnostics.Stopwatch.StartNew();
             long startMemory = GC.GetTotalMemory(true);
@@ -132,7 +132,7 @@ namespace EchoLog.Tests
                          $"分配: {allocated} bytes (应该接近 0)");
 
             // 恢复级别
-            EchoLogger.MinEEchoLogLevel = config.MinLogLevel;
+            EchoLogger.MinEchoLogLevel = config.MinLogLevel;
         }
 
         /// <summary>测试 3：敏感信息过滤</summary>

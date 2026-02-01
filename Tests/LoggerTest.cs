@@ -309,7 +309,7 @@ namespace EchoLog.Tests
             // 绘制测试说明
             GUILayout.BeginArea(new Rect(10, 10, 450, 450));
             GUILayout.Label("=== EchoLog 日志系统测试 ===");
-            GUILayout.Label($"当前日志级别: {EchoLogger.MinEEchoLogLevel}");
+            GUILayout.Label($"当前日志级别: {EchoLogger.MinEchoLogLevel}");
             GUILayout.Label($"配置: {(logConfig ? logConfig.name : "未设置")}");
             GUILayout.Space(10);
 
@@ -327,10 +327,10 @@ namespace EchoLog.Tests
 
             if (GUILayout.Button("切换 Debug 级别"))
             {
-                EchoLogger.MinEEchoLogLevel = EchoLogger.MinEEchoLogLevel == EEchoLogLevel.Debug
+                EchoLogger.MinEchoLogLevel = EchoLogger.MinEchoLogLevel == EEchoLogLevel.Debug
                     ? EEchoLogLevel.Info
                     : EEchoLogLevel.Debug;
-                EchoLogger.Info($"日志级别已切换为: {EchoLogger.MinEEchoLogLevel}");
+                EchoLogger.Info($"日志级别已切换为: {EchoLogger.MinEchoLogLevel}");
             }
 
             GUILayout.Space(10);

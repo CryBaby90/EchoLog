@@ -23,7 +23,7 @@ namespace EchoLog
     /// <summary>主 EchoLogger 静态类</summary>
     public static partial class EchoLogger
     {
-        private static EchoEchoLogConfig config;
+        private static EchoLogConfig config;
         private static readonly List<ILogAppender> appenders = new List<ILogAppender>();
         private static readonly StringBuilder stringBuilder = new StringBuilder(512);
         private static readonly object lockObject = new object();
@@ -77,16 +77,16 @@ namespace EchoLog
                 return;
             }
 
-            Logger.config = config;
+            EchoLogger.config = config;
 
             // 从配置读取日志级别（编辑器和发布模式都生效）
-            MinEEchoLogLevel = config.MinLogLevel;
+            MinEchoLogLevel = config.MinLogLevel;
 
             #if !UNITY_EDITOR
             // 发布模式可以使用更严格的日志级别
-            if (config.ReleaseMinLevel > MinEEchoLogLevel)
+            if (config.ReleaseMinLevel > MinEchoLogLevel)
             {
-                MinEEchoLogLevel = config.ReleaseMinLevel;
+                MinEchoLogLevel = config.ReleaseMinLevel;
             }
             #endif
 
@@ -111,7 +111,7 @@ namespace EchoLog
         }
 
         /// <summary>当前最低日志级别（可在运行时修改）</summary>
-        public static EEchoLogLevel MinEEchoLogLevel { get; set; } = EEchoLogLevel.Info;
+        public static EEchoLogLevel MinEchoLogLevel { get; set; } = EEchoLogLevel.Info;
 
         // ReSharper disable Unity.PerformanceAnalysis
         /// <summary>核心日志方法（线程安全）</summary>
@@ -133,7 +133,7 @@ namespace EchoLog
                 return;
             }
 
-            if (level < MinEEchoLogLevel && !IsCriticalLog(category))
+            if (level < MinEchoLogLevel && !IsCriticalLog(category))
                 return;
 
             var entry = new LogEntry
@@ -168,7 +168,7 @@ namespace EchoLog
         /// <param name="category">日志分类</param>
         public static void LogLazy(EEchoLogLevel level, Func<string> formatter, string category = null)
         {
-            if (config == null || level < MinEEchoLogLevel)
+            if (config == null || level < MinEchoLogLevel)
                 return;
 
             string message = formatter.Invoke();
