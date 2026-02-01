@@ -58,6 +58,12 @@ namespace EchoLog
                     if (instance == null)
                     {
                         GameObject go = new GameObject("AsyncLogQueue");
+
+                        #if UNITY_EDITOR
+                        // 编辑器模式下隐藏对象，防止被保存到场景
+                        go.hideFlags = HideFlags.HideAndDontSave;
+                        #endif
+
                         instance = go.AddComponent<AsyncLogQueue>();
                     }
                 }
@@ -82,6 +88,17 @@ namespace EchoLog
             #endif
 
             Initialize();
+        }
+
+        private void OnDestroy()
+        {
+            // 编辑器模式下清理实例引用
+            #if UNITY_EDITOR
+            if (instance == this)
+            {
+                instance = null;
+            }
+            #endif
         }
 
         /// <summary>初始化异步队列</summary>
